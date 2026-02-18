@@ -33,6 +33,22 @@ resource "aws_subnet" "private" {
   }
 }
 
+#second private 
+resource "aws_subnet" "private_2" {
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = "10.0.4.0/24"
+  availability_zone = "ap-south-1b"
+
+  tags = {
+    Name = "${var.project_name}-private-subnet-2"
+  }
+}
+#associate 2nd priv subnet
+resource "aws_route_table_association" "private_assoc_2" {
+  subnet_id      = aws_subnet.private_2.id
+  route_table_id = aws_route_table.private.id
+}
+
 
 #Internet gateway
 resource "aws_internet_gateway" "this" {
@@ -75,5 +91,22 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private_assoc" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_route_table.private.id
+}
+#second subnet
+resource "aws_subnet" "public_2" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = "10.0.3.0/24"
+  availability_zone       = "ap-south-1b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.project_name}-public-subnet-2"
+  }
+}
+
+#associate 2nd subnet
+resource "aws_route_table_association" "public_assoc_2" {
+  subnet_id      = aws_subnet.public_2.id
+  route_table_id = aws_route_table.public.id
 }
 
