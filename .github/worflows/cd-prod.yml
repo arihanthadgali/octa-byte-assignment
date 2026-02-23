@@ -1,0 +1,15 @@
+name: CD - Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Approval
+        run: echo "Manual approval granted"
+
+      - name: Deploy to production
+        run: echo "Deploying to production..."
